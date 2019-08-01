@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+{% if error_msg %}
+<div class="error">
+  {{ error_msg }}
+</div>
+{% endif %}
+
+<h2>
+  Log in
+</h2>
+
+<form method="POST" action="/login">
+    <label>Email: <input type="email" name="email" /></label>
+    <label>Password: <input type="password" name="password" /></label>
+    <label>Remember me: <input type="checkbox" name="remember_me" /></label>
+    <input type="submit" name="" value="Send" />
+</form>
+{% endblock %}

@@ -1,0 +1,129 @@
+#main-content {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  height: calc(100vh - 86px);
+  
+}
+#game {
+  grid-column: 6/ span 3;
+  grid-row: 4/ span 2;
+  z-index:10;
+  padding : 10px;
+  background-color: #ffa7a7;
+}
+#user-list {
+  grid-column: 9 / span 3;
+  grid-row: 1/ span 5;
+  border-left: #ffa7a7 1px solid;
+  overflow-y: scroll; 
+  overflox-x: hidden;
+}
+
+#posts {
+  grid-column: 1/ span 8;
+  grid-row: 1/ span 5;
+  
+   overflow-y: scroll; 
+   overflox-x: hidden;
+    z-index: 0;
+}
+
+#user-list > header {
+  background-color: #ffa7a7;
+  border-bottom: #ffa7a7 solid 1px;
+  color: white;
+  padding: 5px;
+}
+
+#user-list > ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+#user-list > ul > li {
+  border-bottom: #ffa7a7 solid 1px;
+  padding: 5px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+}
+
+ul#post-list {
+  list-style: none;
+/*  width:100%;*/
+  display: block;
+
+  margin: auto;
+  margin-top: 10px;
+}
+
+#post-list .post {
+  display: block;
+  width: 80%;
+  margin-bottom: 25px;
+  
+}
+
+.post-header {
+  background-color: red;
+  height: 20px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.post-content {
+  border: red 1px solid;
+  border-top: none;
+  padding: 5px;
+}
+
+#post-form {
+  display: flex;
+  flex-direction:row;
+}
+
+#post-form input[type=text] {
+  padding: 10px;
+  border-radius: 0px;
+  border: #ffa7a7 solid 1px;
+  height :20px;
+  display: block;
+  width: 80%;
+}
+
+#post-form input[type=text]:focus{
+  border-color: red;
+}
+
+#post-form input[type=submit]{
+  padding: 10px;
+  border-radius: 0px;
+  border: none;
+  background-color: red;
+  display: block;
+  color: white;
+  font-size: 120%;
+}
+
+.challenge-button {
+  background-color : #AAA;
+  font-variant: small-caps;
+  border : 1px solid #555;
+  padding: 3px;
+  font-size:80%;
+  
+}
+
+.challenge-button:disabled {
+  cursor: not-allowed;
+  background-color: #CCC;
+}
+
+button, input[type=submit] {
+  cursor: pointer;
+}
+

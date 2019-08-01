@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="/static/wall.css" />
+  <script src="static/elm.js"></script>
+{% endblock %}
+
+{% block content %}
+<main id="main-content">
+
+</main>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+var socket = io();
+var app = Elm.Main.init({ node: document.querySelector('#main-content')});
+
+socket.on('userlist', function(userlist){
+  console.log("Userlist received:", userlist);
+  app.ports.userlistPort.send(userlist);
+});
+
+
+</script>
+
+{% endblock %}
