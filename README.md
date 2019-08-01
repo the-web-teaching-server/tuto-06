@@ -217,8 +217,28 @@ type GameStatus
   decline an invitation.
 * Handle unexpected disconnections (forfeit the game if the user is playing).
 * Allow playing many games simultaneously.
-* https://pypi.org/project/flask-redis/
-  We already mentioned that using global variables is fragile. In a real-world scenario,
+* Currently, the Elm application is not aware of the current user. Use the 
+  [flags](https://guide.elm-lang.org/interop/flags.html) in order to have at least
+  the user rowid. This way, you will be able to not display the "challenge button"
+  for the current user.
+  
+  **Warning**: be careful about XSS injection, don't write Javascript code thanks to
+  the template engine.
+  You could do something like:
+  ```html
+  <main id="main-content" data-userrowid="{{ user.rowid }}"></main>
+
+  <script type="text/javascript" charset="utf-8">
+  var mainNode = document.querySelector('#main-content');
+  var app = Elm.Main.init({
+    node: mainNode,
+    flags: { 
+      'userRowid': parseInt(node.dataset.userrowid)
+    }
+  });
+  </script>
+
+* We already mentioned that using global variables is fragile. In a real-world scenario,
   where server is distributed on many cores, global memory is not even an option.
   
   Instead of using global variable, you can use a database, for example an SQL one.
