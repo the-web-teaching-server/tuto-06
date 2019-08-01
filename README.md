@@ -216,6 +216,7 @@ type GameStatus
   `INVITATION SENT`, `INVITATION RECEIVED` and `PLAYING`. Allow a user to
   decline an invitation.
 * Handle unexpected disconnections (forfeit the game if the user is playing).
+* Allow playing many games simultaneously.
 * https://pypi.org/project/flask-redis/
   We already mentioned that using global variables is fragile. In a real-world scenario,
   where server is distributed on many cores, global memory is not even an option.
