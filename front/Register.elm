@@ -25,6 +25,7 @@ testEmailDecoder =
 
 type Msg
     = EmailUpdated String
+    | NameUpdated String
     | Password1Updated String
     | Password2Updated String
     | GotTestEmail (Result Http.Error TestEmail)
@@ -46,6 +47,7 @@ type PasswordCheck
 
 type alias Model =
     { email : String
+    , name : String
     , emailStatus : EmailStatus
     , password1 : String
     , password2 : String
@@ -56,6 +58,7 @@ type alias Model =
 initialModel : Model
 initialModel =
     { email = ""
+    , name = ""
     , emailStatus = NotAnEmail
     , password1 = ""
     , password2 = ""
@@ -65,7 +68,14 @@ initialModel =
 
 isFormValid : Model -> Bool
 isFormValid model =
-    model.password1 == model.password2 && model.emailStatus == Free
+    model.name
+        /= ""
+        && model.password1
+        /= ""
+        && model.password1
+        == model.password2
+        && model.emailStatus
+        == Free
 
 
 getTestEmail : String -> Cmd Msg
@@ -106,6 +116,9 @@ update msg model =
               else
                 Cmd.none
             )
+
+        NameUpdated name ->
+            ( { model | name = name }, Cmd.none )
 
         Password1Updated password1 ->
             ( case model.passwordCheck of
@@ -162,7 +175,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Html.form [ action "/register", method "POST", class "register-form"]
+    Html.form [ action "/register", method "POST", class "register-form" ]
         [ label []
             [ text "Email: "
             , input [ name "email", type_ "email", value model.email, onInput EmailUpdated ]
@@ -171,7 +184,7 @@ view model =
             ]
         , label []
             [ text "Name: "
-            , input [ name "name", type_ "text" ]
+            , input [ name "name", type_ "text", onInput NameUpdated ]
                 []
             ]
         , label []
@@ -195,38 +208,40 @@ view model =
             []
         ]
 
+
 viewEmailStatus : EmailStatus -> Html Msg
 viewEmailStatus emailStatus =
     case emailStatus of
         NotAnEmail ->
-            span [class "status error"] [text "This is not an email!"]
-        
+            span [ class "status error" ] [ text "This is not an email!" ]
+
         Loading ->
-            span [class "status loading"] [text "..."]
-            
+            span [ class "status loading" ] [ text "..." ]
+
         Free ->
-            span [class "status ok"] [text "✅"]
-        
+            span [ class "status ok" ] [ text "✅" ]
+
         AlreadyUsed ->
             span []
-               [ span [class "status error"] [text "Email Already used..."],
-                 a [ href "/login"] [ text "Do you want to log you in?"]
+                [ span [ class "status error" ] [ text "Email Already used..." ]
+                , a [ href "/login" ] [ text "Do you want to log you in?" ]
                 ]
-       
+
         ServerError ->
-            span [class "status error"] [text "I can not speak with the server..."]
-            
-viewPasswordCheck: PasswordCheck -> Html Msg
+            span [ class "status error" ] [ text "I can not speak with the server..." ]
+
+
+viewPasswordCheck : PasswordCheck -> Html Msg
 viewPasswordCheck passwordCheck =
-     case passwordCheck of
-         Password1NotDone ->
-             span [class "status warning"] [text "Fullfil the passwords fields!"]
-        
-         PasswordsMatch ->
-             span [class "status ok"] [text "✅"]
-         
-         PasswordsMismatch ->
-             span [class "status error"] [text "The passwords mismatch!"]
+    case passwordCheck of
+        Password1NotDone ->
+            span [ class "status warning" ] [ text "Fullfil the passwords fields!" ]
+
+        PasswordsMatch ->
+            span [ class "status ok" ] [ text "✅" ]
+
+        PasswordsMismatch ->
+            span [ class "status error" ] [ text "The passwords mismatch!" ]
 
 
 main : Program () Model Msg
