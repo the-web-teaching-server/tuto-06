@@ -13,7 +13,10 @@ port userlistPort : (Value -> msg) -> Sub msg
 
 
 type alias Model =
-    { posts : List Post, users : List User, post : String }
+    { posts : List Post
+    , users : List User
+    , newPost : String
+    }
 
 
 type alias Post =
@@ -42,6 +45,7 @@ type Msg
     | PostUpdated String
     | PostSubmitted
     | NoOp
+
 
 userDecoder : Decoder User
 userDecoder =
@@ -90,11 +94,8 @@ initialModel : Model
 initialModel =
     { posts = []
     , users = []
-    , post = ""
+    , newPost = ""
     }
-
-
-
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -106,15 +107,15 @@ update msg model =
         GotPosts posts ->
             ( { model | posts = posts }, Cmd.none )
 
-        PostUpdated post ->
-            ( { model | post = post }, Cmd.none )
+        PostUpdated newPost ->
+            ( { model | newPost = newPost }, Cmd.none )
 
         PostSubmitted ->
-            if model.post == "" then
+            if model.newPost == "" then
                 ( model, Cmd.none )
 
             else
-                ( { model | post = "" }
+                ( { model | newPost = "" }
                 , Http.post
                     { url = "/posts/"
                     , expect = Http.expectWhatever (\_ -> NoOp)
@@ -147,7 +148,7 @@ view model =
                 [ input
                     [ name "content"
                     , placeholder "Say something nice!"
-                    , value model.post
+                    , value model.newPost
                     , type_ "text"
                     , onInput PostUpdated
                     ]

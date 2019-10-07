@@ -1,10 +1,9 @@
 module Register exposing (main)
 
 import Browser
-import Browser.Dom
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Events exposing (onInput)
 import Http
 import Json.Decode as Decode exposing (Decoder)
 import Regex exposing (Regex)
@@ -97,25 +96,13 @@ update msg model =
         EmailUpdated email ->
             -- We send a request to the server only if the email
             -- is valid!
-            let
-                ok =
-                    isValidEmail email
-            in
-            ( { model
-                | email = email
-                , emailStatus =
-                    if ok then
-                        Loading
+            if isValidEmail email then
+                ( { model | email = email, emailStatus = Loading }
+                , getTestEmail email
+                )
 
-                    else
-                        NotAnEmail
-              }
-            , if ok then
-                getTestEmail email
-
-              else
-                Cmd.none
-            )
+            else
+                ( { model | email = email, emailStatus = NotAnEmail }, Cmd.none )
 
         NameUpdated name ->
             ( { model | name = name }, Cmd.none )
