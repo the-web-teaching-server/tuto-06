@@ -119,7 +119,7 @@ update msg model =
                 , Http.post
                     { url = "/posts/"
                     , expect = Http.expectWhatever (\_ -> NoOp)
-                    , body = Http.jsonBody <| Encode.object [ ( "content", Encode.string model.post ) ]
+                    , body = Http.jsonBody <| Encode.object [ ( "content", Encode.string model.newPost ) ]
                     }
                 )
 
